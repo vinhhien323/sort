@@ -1,0 +1,140 @@
+\documentclass[12pt]{report}
+\usepackage{lmodern}
+\usepackage[utf8]{vietnam}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{indentfirst}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{xurl}
+\usepackage{xcolor}
+\usepackage{tikz,pgfplots}
+\usepackage{geometry}
+\geometry{
+	a4paper,
+	left = 20mm,
+	right = 20mm,
+}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\familydefault}{lmss}
+\lhead{Cấu trúc Dữ liệu và Giải thuật \\ IT003.M21.KHTN}
+\rhead{Huỳnh Đặng Vĩnh Hiền \\ 21520029}
+\begin{document}
+	\section*{Báo cáo thực nghiệm Thuật toán sắp xếp}
+	\subsection*{Tổng quan}
+	Báo cáo được thực hiện nhằm đánh giá tốc độ xử lý của các thuật toán sắp xếp phổ biến, bao gồm Quick Sort, Merge Sort, Heap Sort và công cụ sắp xếp có sẵn của C++ (std::sort).
+	
+	Cả bốn thuật toán trên đều được đánh giá có độ phức tạp là $\mathcal{O}(n\log_2 n)$ với $n$ là số lượng phần tử cần được sắp xếp. Tuy nhiên, do bốn thuật toán sắp xếp trên dựa trên tư tưởng khác nhau, đồng thời có nhiều điểm cần lưu ý trong khâu cài đặt, do đó chênh lệch về thời gian thực thi là điều không tránh khỏi.
+	
+	Việc đánh giá thời gian thực thi của bốn thuật toán sẽ giúp đánh giá và lựa chọn được thuật toán sắp xếp tối ưu.
+	
+	Dữ liệu, mã nguồn và các tài liệu có liên quan đến báo cáo này có thể được tìm thấy tại \url{https://github.com/vinhhien323/sort}.
+	
+	\subsection*{Môi trường, dữ liệu và mã nguồn}
+	
+	\textbf{Môi trường:}
+	
+	\begin{itemize}
+		\item Hệ điều hành: Ubuntu 20.04
+		\item Trình biên dịch: GNU g++ 9.3.0
+		\item CPU: Intel Core i5 - 8250U
+		\item RAM: 12GB
+	\end{itemize}
+	
+	\textbf{Dữ liệu:}
+	
+	Mỗi bộ test dùng cho việc thực nghiệm là một dãy số thực có $10^6$ phần tử, trong đó mỗi phần tử có giá trị tuyệt đối dưới $10^9$ và có độ chính xác đến $9$ chữ số sau dấu chấm thập phân.
+	
+	Dữ liệu bao gồm $10$ bộ test, bộ test thứ nhất được sắp xếp sẵn theo thứ tự tăng dần, bộ test thứ hai được sắp xếp sẵn theo thứ tự giảm dần, các bộ test còn lại có thứ tự sắp xếp sẵn là ngẫu nhiên.
+	
+	\textbf{Mã nguồn:}
+	
+	Mã nguồn được viết bằng ngôn ngữ lập trình C++, phiên bản C++17. Kiểu dữ liệu được sử dụng để lưu trữ các phần tử là \textbf{long double}.
+	
+	\subsection*{Kết quả thực nghiệm}
+	
+	\begin{center}
+		
+		\begin{tabular}{|c|c|c|c|c|}
+			\hline
+			& Quick Sort & Merge Sort & Heap Sort & std::sort \\
+			\hline
+			test01 & 525 & 874 & 1573 & 274 \\ 
+			\hline
+			test02 & 517 & 857 & 1064 & 209 \\ 
+			\hline
+			test03 & 598 & 1217& 1277 & 462 \\ 
+			\hline
+			test04 & 613 & 1217& 1281 & 458 \\ 
+			\hline
+			test05 & 616 & 1226& 1278 & 458 \\ 
+			\hline
+			test06 & 591 & 1217& 1273 & 461 \\ 
+			\hline
+			test07 & 591 & 1217& 1276 & 469 \\
+			\hline
+			test08 & 595 & 1223& 1276 & 459 \\ 
+			\hline
+			test09 & 602 & 1221& 1293 & 465 \\
+			\hline
+			test10 & 615 & 1217& 1290 & 458 \\
+			\hline
+			Chậm nhất & 616 & 1226 & 1573 & 469 \\
+			\hline
+			Nhanh nhất & 517 & 857 &1064 & 209 \\ 
+			\hline
+			Trung bình & 586 & 1149 &1288 & 417 \\
+			\hline
+		\end{tabular}
+	
+		\textbf{Bảng ghi nhận thời gian thực thi (ms)}
+	\end{center}
+	
+	\begin{center}
+	\begin{tikzpicture}
+		\begin{axis}[
+			ytick scale label code/.code={},
+			ymax = 2000,
+			symbolic x coords={Quick Sort, Merge Sort, Heap Sort, std::sort},
+			xtick=data,
+			height=9cm,
+			width=15cm,
+			grid=major,
+			xlabel={Thuật toán sắp xếp},
+			ylabel={Thời gian thực thi (ms)},
+			legend style={
+				cells={anchor=east},
+				legend pos=north east,
+			}
+			]
+			
+			\addplot coordinates {
+				(Quick Sort, 616) (Merge Sort, 1226) (Heap Sort, 1573) (std::sort, 469)
+			};
+			\addplot coordinates {
+				(Quick Sort, 517) (Merge Sort, 857) (Heap Sort, 1064) (std::sort, 209)
+			};
+			\addplot coordinates {
+				(Quick Sort, 586) (Merge Sort, 1149) (Heap Sort, 1288) (std::sort, 417)
+			};
+			\legend{Chậm nhất,Nhanh nhất, Trung bình}
+		\end{axis}
+	\end{tikzpicture}
+
+	\textbf{So sánh thời gian thực thi tương ứng với các thuật toán sắp xếp}
+
+	\end{center}
+	
+	\subsection*{Kết luận}
+	
+	Trong bốn thuật toán sắp xếp được đề cập, std::sort có thời gian thực thi nhanh nhất và Heap Sort có thời gian thực thi chậm nhất.
+	
+	Thuật toán Quick Sort và std::sort có thời gian thực thi gần như tương đương nhau, trừ trường hợp dãy đã cho có tính đơn điệu thì std::sort giảm được thời gian thực thi khá đáng kể.
+	
+	Merge Sort và Heap Sort có tốc độ chạy chậm hơn đáng kể do sử dụng cấu trúc dữ liệu phức tạp và khó cài đặt.
+	
+	\textbf{Tổng kết:} std::sort được khuyến nghị sử dụng trong hầu hết trường hợp do có thời gian thực thi vượt trội và đã được cung cấp sẵn trong ngôn ngữ lập trình.
+	
+\end{document}
